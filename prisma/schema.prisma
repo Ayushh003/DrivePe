@@ -1,0 +1,95 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+model User {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(CUSTOMER)
+  phone     String?
+  avatar    String?
+  bookings  Booking[]
+  reviews   Review[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Car {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  brand        String
+  model        String
+  year         Int
+  category     String    // e.g. "Supercar", "Luxury Sedan", "Electric", "SUV"
+  pricePerDay  Float
+  images       String[]  // Array of image URLs
+  description  String
+  fuelType     String    // e.g. "Electric", "Petrol", "Hybrid"
+  transmission String    // e.g. "Automatic", "Dual-Clutch"
+  seats        Int       @default(4)
+  mileage      String?   // e.g. "12 km/l" or "480 km range"
+  horsepower   Int?      // e.g. 650
+  acceleration String?   // e.g. "2.8s (0-100 km/h)"
+  location     String    @default("Mumbai / Delhi / Bengaluru")
+  features     String[]  // ["Autopilot", "Panoramic Sunroof", "Burmester 3D Sound", ...]
+  isAvailable  Boolean   @default(true)
+  rating       Float     @default(5.0)
+  reviewsCount Int       @default(0)
+  bookings     Booking[]
+  reviews      Review[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Booking {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String?       @db.ObjectId
+  carId         String        @db.ObjectId
+  startDate     DateTime
+  endDate       DateTime
+  totalDays     Int
+  totalPrice    Float
+  customerName  String
+  customerEmail String
+  customerPhone String
+  utrNumber     String        // 12-digit UPI Transaction / UTR ID
+  status        BookingStatus @default(PENDING)
+  paymentMethod String        @default("UPI_QR")
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  car  Car   @relation(fields: [carId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  carId     String   @db.ObjectId
+  rating    Int      @default(5)
+  comment   String
+  userName  String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  car  Car  @relation(fields: [carId], references: [id], onDelete: Cascade)
+}

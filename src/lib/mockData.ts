@@ -1,0 +1,938 @@
+import { Car, User, Booking } from '@/types';
+
+export const initialCars: Car[] = [
+  // ==========================================
+  // 1. HATCHBACKS (4 Cars)
+  // ==========================================
+  {
+    id: 'car-hatch-1',
+    brand: 'Maruti Suzuki',
+    model: 'Swift ZXi+',
+    year: 2024,
+    category: 'Hatchback',
+    pricePerDay: 1200,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ31LGFOPMlXZDb2wnZsWo8AaUMnpTnXDbaYmIgGUHOPg&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV84e259aXvHOOf7OEaXs-r12ArG-i9aEZjIlnVBzMtg&s=10'
+    ],
+    description: 'India’s favorite sporty hatchback offering peppy performance, exceptional fuel economy, and effortless city maneuverability. Equipped with modern SmartPlay touchscreen and auto climate control.',
+    fuelType: 'Petrol',
+    transmission: '5-Speed Manual',
+    seats: 5,
+    mileage: '24.8 km/l',
+    horsepower: 82,
+    acceleration: '11.2s (0-100 km/h)',
+    location: 'Mumbai, Delhi NCR & Bengaluru',
+    features: [
+      'SmartPlay Pro+ 9-inch Touchscreen',
+      'Cruise Control',
+      'LED Projector Headlamps with DRLs',
+      'Rear Parking Camera with Sensors',
+      'Dual Front Airbags & ABS with EBD',
+      'Push Button Engine Start/Stop'
+    ],
+    isAvailable: true,
+    rating: 4.8,
+    reviewsCount: 34,
+    reviews: [
+      {
+        id: 'rev-swift-1',
+        userId: 'user-demo-1',
+        carId: 'car-hatch-1',
+        rating: 5,
+        comment: 'Super easy to drive in heavy city traffic. Mileage was outstanding and pick-up was super smooth.',
+        userName: 'Aarav Sharma',
+        createdAt: '2026-02-14T10:30:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-10T00:00:00Z')
+  },
+  {
+    id: 'car-hatch-2',
+    brand: 'Hyundai',
+    model: 'i20 Asta (O)',
+    year: 2024,
+    category: 'Hatchback',
+    pricePerDay: 1400,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToTiqEFm9wL64_3l0C-iTOke5Xh2vM7EIpnXqa-2C2XA&s=10'
+    ],
+    description: 'Premium hatchback offering European styling, a plush feature-packed cabin, electric sunroof, and concert-like Bose audio for weekend highway drives and daily commutes.',
+    fuelType: 'Petrol',
+    transmission: 'IVT Automatic',
+    seats: 5,
+    mileage: '20.0 km/l',
+    horsepower: 87,
+    acceleration: '11.8s (0-100 km/h)',
+    location: 'Delhi NCR, Mumbai & Bengaluru',
+    features: [
+      'Bose 7-Speaker Premium Sound System',
+      'Electric Sunroof',
+      '10.25-inch Touchscreen with Navigation',
+      'Wireless Smartphone Charger',
+      '6 Airbags as Standard',
+      'Bluelink Connected Car Technology'
+    ],
+    isAvailable: true,
+    rating: 4.9,
+    reviewsCount: 28,
+    reviews: [
+      {
+        id: 'rev-i20-1',
+        userId: 'user-demo-2',
+        carId: 'car-hatch-2',
+        rating: 5,
+        comment: 'The Bose speakers and sunroof made the road trip feel very premium. Highly recommended!',
+        userName: 'Pooja Verma',
+        createdAt: '2026-02-20T14:15:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-12T00:00:00Z')
+  },
+  {
+    id: 'car-hatch-3',
+    brand: 'Tata',
+    model: 'Altroz XZ+ (S)',
+    year: 2024,
+    category: 'Hatchback',
+    pricePerDay: 1300,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4ZDFlxbH6ztbIzuDmUZO8M1shKZ8QfdB4EEEBaD026Q&s=10'
+    ],
+    description: 'The gold standard of safety with 5-star Global NCAP crash rating, 90-degree opening doors for effortless ingress, laser-cut alloy wheels, and signature Harman acoustics.',
+    fuelType: 'Petrol',
+    transmission: 'DCA Dual-Clutch Automatic',
+    seats: 5,
+    mileage: '19.3 km/l',
+    horsepower: 86,
+    acceleration: '12.0s (0-100 km/h)',
+    location: 'Mumbai, Pune & Delhi',
+    features: [
+      '5-Star Global NCAP Safety Rating',
+      'Harman 8-Speaker Audio System',
+      'Voice-Assisted Electric Sunroof',
+      '90-Degree Wide Opening Doors',
+      'Cruise Control with Steering Controls',
+      'Rain Sensing Smart Wipers'
+    ],
+    isAvailable: true,
+    rating: 4.85,
+    reviewsCount: 22,
+    reviews: [
+      {
+        id: 'rev-altroz-1',
+        userId: 'user-demo-3',
+        carId: 'car-hatch-3',
+        rating: 5,
+        comment: 'Felt extremely safe on the expressway. Heavy door build and great high-speed stability.',
+        userName: 'Rohan Mehta',
+        createdAt: '2026-03-01T11:00:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-15T00:00:00Z')
+  },
+  {
+    id: 'car-hatch-4',
+    brand: 'Maruti Suzuki',
+    model: 'Baleno Alpha',
+    year: 2024,
+    category: 'Hatchback',
+    pricePerDay: 1300,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbMe0R4an5V41OdVcqIF6oeyyU-smK8WaXBvUCeu2uvg&s=10'
+    ],
+    description: 'Spacious premium hatchback packed with segment-first Head-Up Display (HUD), 360-degree surround view camera, expansive legroom, and refined DualJet engine.',
+    fuelType: 'Petrol',
+    transmission: '5-Speed AGS Automatic',
+    seats: 5,
+    mileage: '22.3 km/l',
+    horsepower: 89,
+    acceleration: '11.5s (0-100 km/h)',
+    location: 'Bengaluru, Hyderabad & Mumbai',
+    features: [
+      'Head-Up Display (HUD)',
+      '360 View Surround Camera',
+      '9-inch SmartPlay Pro+ Touchscreen',
+      'Arkamys Surround Sound System',
+      '6 Airbags & ESP with Hill Hold',
+      'UV Cut Window Glasses'
+    ],
+    isAvailable: true,
+    rating: 4.75,
+    reviewsCount: 31,
+    reviews: [
+      {
+        id: 'rev-baleno-1',
+        userId: 'user-demo-4',
+        carId: 'car-hatch-4',
+        rating: 5,
+        comment: 'The 360 camera makes tight parking in Bangalore mall basements completely stress-free.',
+        userName: 'Divya Iyer',
+        createdAt: '2026-03-05T09:30:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-18T00:00:00Z')
+  },
+
+  // ==========================================
+  // 2. CROSSOVERS (4 Cars)
+  // ==========================================
+  {
+    id: 'car-cross-1',
+    brand: 'Tata',
+    model: 'Punch Creative Flagship',
+    year: 2024,
+    category: 'Crossover',
+    pricePerDay: 1500,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwBImfC2QMxNVCFxggloSXJ7klQDBaSPEpNzOiOtV1vg&s=10'
+    ],
+    description: 'Sub-compact SUV with muscular stance, 187mm high ground clearance, and 5-star safety rating. Handles rough city patches, speed bumps, and rural routes effortlessly.',
+    fuelType: 'Petrol',
+    transmission: '5-Speed Manual',
+    seats: 5,
+    mileage: '20.1 km/l',
+    horsepower: 87,
+    acceleration: '12.5s (0-100 km/h)',
+    location: 'Mumbai, Delhi NCR & Bengaluru',
+    features: [
+      '5-Star Global NCAP Safety Rating',
+      '187mm SUV Ground Clearance',
+      'Harman Sound System with 6 Speakers',
+      '7-inch TFT Semi-Digital Cluster',
+      'Traction Pro Off-Road Drive Modes',
+      'Cooled Glove Box & Auto Headlamps'
+    ],
+    isAvailable: true,
+    rating: 4.85,
+    reviewsCount: 40,
+    reviews: [
+      {
+        id: 'rev-punch-1',
+        userId: 'user-demo-1',
+        carId: 'car-cross-1',
+        rating: 5,
+        comment: 'High seating position gives clear view of the road. Took it on a Lonavala trip, handled ghats effortlessly.',
+        userName: 'Suresh Patil',
+        createdAt: '2026-02-18T16:20:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-20T00:00:00Z')
+  },
+  {
+    id: 'car-cross-2',
+    brand: 'Maruti Suzuki',
+    model: 'Fronx Alpha Turbo',
+    year: 2024,
+    category: 'Crossover',
+    pricePerDay: 1700,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB3-YnB6dfyQbHeiPf8QWeagNWVWj9Pdc2IrZo_xPwvg&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCbGim5bKRDIRhNASfibcPy57uj_ahqeQPrlrRt2MK7g&s=10'
+    ],
+    description: 'Dynamic coupe crossover powered by 1.0L Boosterjet turbo petrol engine. Offers rapid acceleration, sleek aerodynamic roofline, and generous ground clearance.',
+    fuelType: 'Turbo Petrol',
+    transmission: '6-Speed Automatic with Paddle Shifters',
+    seats: 5,
+    mileage: '21.5 km/l',
+    horsepower: 100,
+    acceleration: '9.8s (0-100 km/h)',
+    location: 'Delhi NCR, Mumbai & Bengaluru',
+    features: [
+      '1.0L Turbo Boosterjet Engine',
+      '360 Degree Surround View Camera',
+      'Head-Up Display (HUD)',
+      'Wireless Apple CarPlay & Android Auto',
+      '16-inch Precision Cut Diamond Alloys',
+      'Qi Fast Wireless Phone Charger'
+    ],
+    isAvailable: true,
+    rating: 4.9,
+    reviewsCount: 25,
+    reviews: [
+      {
+        id: 'rev-fronx-1',
+        userId: 'user-demo-2',
+        carId: 'car-cross-2',
+        rating: 5,
+        comment: 'Turbo engine gives quick punch while overtaking. The paddle shifters are super fun!',
+        userName: 'Kunal Singhania',
+        createdAt: '2026-02-25T13:40:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-22T00:00:00Z')
+  },
+  {
+    id: 'car-cross-3',
+    brand: 'Hyundai',
+    model: 'Exter SX (O) Connect',
+    year: 2024,
+    category: 'Crossover',
+    pricePerDay: 1500,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHwIr3HVFeK25D-qbXJ8uIcvFc6kCy3wNIPTf6BJoLOw&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy8XIscjr8nCnEyuYlPRnlL-SEtQAxSEhZyJ34NsOWtg&s=10'
+    ],
+    description: 'Outdoor-themed compact crossover equipped with factory-fitted dual-camera dashcam, smart electric sunroof, 6 airbags, and comfortable high-perch seating.',
+    fuelType: 'Petrol',
+    transmission: 'Smart Auto AMT',
+    seats: 5,
+    mileage: '19.4 km/l',
+    horsepower: 83,
+    acceleration: '12.6s (0-100 km/h)',
+    location: 'Bengaluru, Chennai & Mumbai',
+    features: [
+      'Factory-Fitted Dual Camera Dashcam',
+      'Voice-Controlled Electric Sunroof',
+      '6 Airbags as Standard Equipment',
+      '8-inch HD Touchscreen Navigation',
+      'Paddle Shifters & Cruise Control',
+      'Bluelink Connected Features with SOS'
+    ],
+    isAvailable: true,
+    rating: 4.8,
+    reviewsCount: 19,
+    reviews: [
+      {
+        id: 'rev-exter-1',
+        userId: 'user-demo-3',
+        carId: 'car-cross-3',
+        rating: 5,
+        comment: 'Dual dashcam gave great peace of mind during our Goa trip. Very comfortable rear seat.',
+        userName: 'Ananya Deshmukh',
+        createdAt: '2026-03-02T18:10:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-25T00:00:00Z')
+  },
+  {
+    id: 'car-cross-4',
+    brand: 'Nissan',
+    model: 'Magnite XV Premium Turbo',
+    year: 2024,
+    category: 'Crossover',
+    pricePerDay: 1600,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcG4QZqy_cYviYtOwxGg8qrDlVE-3vqwinyH1YlskwFg&s=10'
+    ],
+    description: 'Bold Japanese crossover featuring responsive HRA0 1.0L turbo engine, smooth CVT transmission, 205mm ground clearance, and punchy JBL audio system.',
+    fuelType: 'Turbo Petrol',
+    transmission: 'X-TRONIC CVT Automatic',
+    seats: 5,
+    mileage: '20.0 km/l',
+    horsepower: 100,
+    acceleration: '10.2s (0-100 km/h)',
+    location: 'Mumbai, Delhi NCR & Hyderabad',
+    features: [
+      'Around View 360-Degree Camera',
+      'JBL Premium Acoustic Audio',
+      '205mm Segment-Leading Ground Clearance',
+      '7-inch Virtual Driver Instrument Cluster',
+      'Wireless Apple CarPlay & Android Auto',
+      'Vehicle Dynamic Control & Hill Start Assist'
+    ],
+    isAvailable: true,
+    rating: 4.75,
+    reviewsCount: 17,
+    reviews: [
+      {
+        id: 'rev-magnite-1',
+        userId: 'user-demo-4',
+        carId: 'car-cross-4',
+        rating: 5,
+        comment: 'CVT automatic is buttery smooth in bumper to bumper traffic. Great value rental.',
+        userName: 'Vikram Joshi',
+        createdAt: '2026-03-04T12:00:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-27T00:00:00Z')
+  },
+
+  // ==========================================
+  // 3. COMPACT SUVS (4 Cars)
+  // ==========================================
+  {
+    id: 'car-suv-c1',
+    brand: 'Tata',
+    model: 'Nexon Fearless+ S',
+    year: 2024,
+    category: 'Compact SUV',
+    pricePerDay: 2000,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNhWESqqeWwcOe3seFYj4-3ENDQlsItFSpJ7Ny1I4biQ&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS8ps6TN8pysFlocqU-bQ1rpm3lZ68kmDqa0zxIcDD9g&s=10'
+    ],
+    description: 'India’s #1 bestselling compact SUV equipped with 5-star Bharat NCAP safety, ventilated front seats, 10.25-inch high-definition screen, and 7-speed DCA dual-clutch transmission.',
+    fuelType: 'Turbo Petrol',
+    transmission: '7-Speed DCA Automatic',
+    seats: 5,
+    mileage: '17.4 km/l',
+    horsepower: 120,
+    acceleration: '10.5s (0-100 km/h)',
+    location: 'Mumbai, Delhi NCR & Bengaluru',
+    features: [
+      '5-Star Bharat NCAP Safety Score',
+      '10.25-inch High-Definition Floating Screen',
+      'Ventilated Front Seats for Indian Summers',
+      '360 HD Surround Camera with Blind View',
+      'JBL 9-Speaker Audio with Subwoofer',
+      'Sequential LED DRLs with Welcome Animation'
+    ],
+    isAvailable: true,
+    rating: 4.9,
+    reviewsCount: 48,
+    reviews: [
+      {
+        id: 'rev-nexon-1',
+        userId: 'user-demo-1',
+        carId: 'car-suv-c1',
+        rating: 5,
+        comment: 'Ventilated seats are a lifesaver in Mumbai heat! DCA gearbox is very quick and responsive.',
+        userName: 'Sameer Kulkarni',
+        createdAt: '2026-02-12T15:00:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-28T00:00:00Z')
+  },
+  {
+    id: 'car-suv-c2',
+    brand: 'Maruti Suzuki',
+    model: 'Brezza ZXi+ Dual Tone',
+    year: 2024,
+    category: 'Compact SUV',
+    pricePerDay: 1900,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCoxK9lqlFLXGFPKxz5LxGkZy3Qx2JktWKthEknHZBTw&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgQ2mboMccvWu0APIwlJ9aj6uSe2sOaPEISIe-lwT_dQ&s=10'
+    ],
+    description: 'Reliable, spacious family compact SUV with smooth 1.5L K15C engine, electric sunroof, Head-Up Display, 360 camera, and exceptional ride comfort over broken roads.',
+    fuelType: 'Petrol',
+    transmission: '6-Speed AT with Paddle Shifters',
+    seats: 5,
+    mileage: '19.8 km/l',
+    horsepower: 103,
+    acceleration: '11.0s (0-100 km/h)',
+    location: 'Delhi NCR, Mumbai & Pune',
+    features: [
+      'Electric Sunroof with Tilt Function',
+      'Head-Up Display (HUD)',
+      '360 Degree HD Camera',
+      'Arkamys Premium Surround Sound',
+      '6 Airbags & Electronic Stability Program',
+      'SmartPlay Pro+ 9-inch Display'
+    ],
+    isAvailable: true,
+    rating: 4.85,
+    reviewsCount: 36,
+    reviews: [
+      {
+        id: 'rev-brezza-1',
+        userId: 'user-demo-2',
+        carId: 'car-suv-c2',
+        rating: 5,
+        comment: 'Very quiet cabin and great fuel efficiency on Delhi-Jaipur highway. Delivered clean on time.',
+        userName: 'Manish Rawat',
+        createdAt: '2026-02-22T08:30:00Z'
+      }
+    ],
+    createdAt: new Date('2026-01-30T00:00:00Z')
+  },
+  {
+    id: 'car-suv-c3',
+    brand: 'Hyundai',
+    model: 'Venue SX (O) Turbo',
+    year: 2024,
+    category: 'Compact SUV',
+    pricePerDay: 1900,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnMkgojKXY9GIlGlsdBazrMsV67-XtXerQGSCuq6qSxQ&s=10'
+    ],
+    description: 'High-tech compact SUV equipped with Level 1 ADAS SmartSense safety, 2-step reclining rear seats, voice-controlled sunroof, and lightning-fast 7-speed dual clutch gearbox.',
+    fuelType: 'Turbo Petrol',
+    transmission: '7-Speed Dual Clutch (DCT)',
+    seats: 5,
+    mileage: '18.3 km/l',
+    horsepower: 120,
+    acceleration: '10.4s (0-100 km/h)',
+    location: 'Bengaluru, Hyderabad & Mumbai',
+    features: [
+      'Level 1 ADAS SmartSense Safety Suite',
+      '2-Step Reclining Rear Comfort Seats',
+      'Voice-Controlled Smart Electric Sunroof',
+      'Cabin Air Purifier with AQI Display',
+      'Bluelink 60+ Connected Car Features',
+      'Digital Driver Cluster with Multi-Info'
+    ],
+    isAvailable: true,
+    rating: 4.8,
+    reviewsCount: 29,
+    reviews: [
+      {
+        id: 'rev-venue-1',
+        userId: 'user-demo-3',
+        carId: 'car-suv-c3',
+        rating: 5,
+        comment: 'ADAS features were very helpful on the Bangalore expressway. Quick instant UPI booking.',
+        userName: 'Karthik Rao',
+        createdAt: '2026-03-01T17:45:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-01T00:00:00Z')
+  },
+  {
+    id: 'car-suv-c4',
+    brand: 'Kia',
+    model: 'Sonet GTX+ Turbo',
+    year: 2024,
+    category: 'Compact SUV',
+    pricePerDay: 2000,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYOcIWFJQXXvC1u_IpXkbRobxpodg95GB02HYiurQS-Q&s=10'
+    ],
+    description: 'Aggressively styled modern compact SUV featuring twin 10.25-inch digital screens, Bose 7-speaker immersive sound, front ventilated seats, and Level 1 ADAS safety.',
+    fuelType: 'Turbo Petrol',
+    transmission: '7-Speed DCT Automatic',
+    seats: 5,
+    mileage: '18.2 km/l',
+    horsepower: 120,
+    acceleration: '10.3s (0-100 km/h)',
+    location: 'Mumbai, Delhi NCR & Chennai',
+    features: [
+      'Level 1 ADAS Autonomous Safety Tech',
+      'Bose 7-Speaker Premium Sound System',
+      'Front Ventilated Bucket Seats',
+      'Dual 10.25-inch Touchscreen & Driver Cluster',
+      '360 Blind View Monitor in Instrument Cluster',
+      'LED Ambient Sound Mood Lighting'
+    ],
+    isAvailable: true,
+    rating: 4.9,
+    reviewsCount: 33,
+    reviews: [
+      {
+        id: 'rev-sonet-1',
+        userId: 'user-demo-4',
+        carId: 'car-suv-c4',
+        rating: 5,
+        comment: 'The Bose audio and ventilated seats make long weekend trips super relaxing. 10/10!',
+        userName: 'Gaurav Nair',
+        createdAt: '2026-03-07T10:15:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-03T00:00:00Z')
+  },
+
+  // ==========================================
+  // 4. SUVS (Mid-size & Full-size) (4 Cars)
+  // ==========================================
+  {
+    id: 'car-suv-m1',
+    brand: 'Mahindra',
+    model: 'Scorpio-N Z8L 4XPLOR',
+    year: 2024,
+    category: 'SUV',
+    pricePerDay: 3000,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-D7NUi5pOYNjq7nbjZwjX8tOs5mhlRTfdtYe-F_jVRw&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7RB5DxEUZKcm8ukLMnKcwbxxwU2nOoVYKAhZLFT8pkA&s=10'
+    ],
+    description: 'The Big Daddy of SUVs. Built on a rugged ladder-frame chassis with 2.2L mHawk diesel engine, 4XPLOR terrain modes (Snow, Mud, Sand), and luxurious Sony 12-speaker 3D audio.',
+    fuelType: 'Diesel',
+    transmission: '6-Speed Automatic 4WD',
+    seats: 7,
+    mileage: '14.5 km/l',
+    horsepower: 175,
+    acceleration: '9.8s (0-100 km/h)',
+    location: 'Delhi NCR, Mumbai & Chandigarh',
+    features: [
+      '4XPLOR Intelligent Terrain Management (Snow, Mud, Sand)',
+      'Sony 12-Speaker 3D Immersive Audio',
+      'Electric Sunroof & Dual Zone FATC Climate Control',
+      'Plush Rich Coffee Black Leatherette Captain Seats',
+      'Penta-link Rear Suspension with FDD Technology',
+      'Wireless Phone Charger & AdrenoX Connect'
+    ],
+    isAvailable: true,
+    rating: 4.95,
+    reviewsCount: 52,
+    reviews: [
+      {
+        id: 'rev-scorpio-1',
+        userId: 'user-demo-1',
+        carId: 'car-suv-m1',
+        rating: 5,
+        comment: 'Road presence is unmatched! Took it to Himachal for 5 days. Drove over slush and snow with zero hiccups.',
+        userName: 'Jaspreet Singh',
+        createdAt: '2026-02-15T18:00:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-05T00:00:00Z')
+  },
+  {
+    id: 'car-suv-m2',
+    brand: 'Toyota',
+    model: 'Fortuner 4x4 Legender',
+    year: 2024,
+    category: 'SUV',
+    pricePerDay: 4500,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCnchWri0HfjFQnwo6cGs7BZcipasDj6-6FB5gvqwVmw&s',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPI_A0lJmrQu_Xx8HnBtUwsQwSC6AQqcq_xCm2iw_YkQ&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJwu9SeenurX96iR5UG0X_vilL_jBN-Qu5P57v6MOIpQ&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVWSIdjwmFgsaXxzpqHEI53da7GJeBMOrSb7_KRh7cCg&s=10'
+    ],
+    description: 'India’s ultimate VIP SUV known for indestructible build quality, legendary 4x4 off-road capabilities, 204 HP diesel powertrain producing 500 Nm torque, and unmatched road dominance.',
+    fuelType: 'Diesel',
+    transmission: '6-Speed AT with 4x4 High/Low',
+    seats: 7,
+    mileage: '14.2 km/l',
+    horsepower: 204,
+    acceleration: '9.6s (0-100 km/h)',
+    location: 'Mumbai, Delhi NCR & Bengaluru',
+    features: [
+      'Unmatched 4x4 Off-Road Dominance with Low Range',
+      'JBL 11-Speaker Audio with Subwoofer',
+      'Front Ventilated Leather Seats',
+      'Electronic Differential Lock & Auto Limited Slip',
+      'Hands-Free Kick Sensor Powered Tailgate',
+      'Quad-LED Cat-Eye Headlamps with Waterfalls DRLs'
+    ],
+    isAvailable: true,
+    rating: 5.0,
+    reviewsCount: 64,
+    reviews: [
+      {
+        id: 'rev-fortuner-1',
+        userId: 'user-demo-2',
+        carId: 'car-suv-m2',
+        rating: 5,
+        comment: 'Booked for a family wedding and road trip. Pure authority on roads and bulletproof reliability.',
+        userName: 'Harshwardhan Rathore',
+        createdAt: '2026-02-28T19:30:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-07T00:00:00Z')
+  },
+  {
+    id: 'car-suv-m3',
+    brand: 'Mahindra',
+    model: 'XUV700 AX7 Luxury AWD',
+    year: 2024,
+    category: 'SUV',
+    pricePerDay: 3500,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVbWBWdhpd_GbkyDulC_gGnAik3ialwo9rH0nZFSrRQw&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ6ftK4IXICBCU24j79he8tA6hsvFhYTuTXNrhVIMALw&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIrzy28CPM75J0DZW6Ay1wk_OaRDPTIHs4MOwzClqxAg&s=10'
+    ],
+    description: 'Next-gen luxury SUV equipped with Level 2 ADAS (Adaptive Cruise & Emergency Brake), giant panoramic Skyroof, 200 HP engine, and concert-grade Sony 3D sound system.',
+    fuelType: 'Diesel',
+    transmission: '6-Speed Automatic AWD',
+    seats: 7,
+    mileage: '15.2 km/l',
+    horsepower: 200,
+    acceleration: '8.9s (0-100 km/h)',
+    location: 'Bengaluru, Mumbai & Delhi NCR',
+    features: [
+      'Level 2 ADAS (Adaptive Cruise, Lane Keep, Emergency Brake)',
+      'Panoramic Skyroof (Largest in Segment)',
+      'Sony 3D 12-Speaker Sound System with Subwoofer',
+      'Dual 10.25-inch Curved Glass Cockpit Displays',
+      'Flush Smart Door Handles with Auto Pop-Out',
+      'Wireless Android Auto & Apple CarPlay'
+    ],
+    isAvailable: true,
+    rating: 4.95,
+    reviewsCount: 44,
+    reviews: [
+      {
+        id: 'rev-xuv-1',
+        userId: 'user-demo-3',
+        carId: 'car-suv-m3',
+        rating: 5,
+        comment: 'The panoramic sunroof and Sony sound system are unbelievable. ADAS adaptive cruise worked like magic.',
+        userName: 'Nitin Agarwal',
+        createdAt: '2026-03-03T14:20:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-10T00:00:00Z')
+  },
+  {
+    id: 'car-suv-m4',
+    brand: 'Tata',
+    model: 'Safari Accomplished+ 6S',
+    year: 2024,
+    category: 'SUV',
+    pricePerDay: 3200,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHv6EDjW2TCpB8Vf61oRgxv8vqaqmyMmzSfHu4RS5dbg&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR587P69jXe_YOCT2I-DjjeNHD08j00VsTPXrSjBASMXA&s=10'
+    ],
+    description: 'Flagship 6/7-seater luxury SUV featuring 5-star Bharat NCAP safety, ventilated 1st & 2nd row captain chairs, Level 2 ADAS, electronic gear shifter, and panoramic sunroof with ambient mood lights.',
+    fuelType: 'Diesel',
+    transmission: '6-Speed E-Shifter Automatic',
+    seats: 7,
+    mileage: '16.1 km/l',
+    horsepower: 170,
+    acceleration: '10.2s (0-100 km/h)',
+    location: 'Mumbai, Pune & Delhi NCR',
+    features: [
+      '5-Star Bharat NCAP Safety Score (Adult & Child)',
+      'Level 2 ADAS with 11 Key Autonomous Features',
+      'Ventilated 1st and 2nd Row Captain Seats',
+      'Dual Zone Climate Control with Touch Screen',
+      'Panoramic Sunroof with Multi-Color Mood Lighting',
+      'JBL 10-Speaker Audio with Advanced Equalizer'
+    ],
+    isAvailable: true,
+    rating: 4.9,
+    reviewsCount: 38,
+    reviews: [
+      {
+        id: 'rev-safari-1',
+        userId: 'user-demo-4',
+        carId: 'car-suv-m4',
+        rating: 5,
+        comment: 'Middle row captain seats are as comfortable as business class! Perfect long-haul family cruiser.',
+        userName: 'Alok Trivedi',
+        createdAt: '2026-03-06T16:10:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-12T00:00:00Z')
+  },
+
+  // ==========================================
+  // 5. ELECTRIC CARS (EVs) (4 Cars)
+  // ==========================================
+  {
+    id: 'car-ev-1',
+    brand: 'Tata',
+    model: 'Nexon EV Empowered+ LR',
+    year: 2024,
+    category: 'Electric',
+    pricePerDay: 2200,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvTgVapfWsqHnGg0cEqT1mrTCfIIxkiW-k0P0I5qpRsQ&s=10'
+    ],
+    description: 'India’s most trusted electric SUV with 40.5 kWh Long Range battery pack providing 465 km certified range, 145 HP instant electric torque, V2V vehicle charging, and ultra-quiet luxury cabin.',
+    fuelType: 'Electric',
+    transmission: 'Automatic Single Speed',
+    seats: 5,
+    mileage: '465 km Range / Full Charge',
+    horsepower: 145,
+    acceleration: '8.9s (0-100 km/h)',
+    location: 'Mumbai, Bengaluru & Delhi NCR',
+    features: [
+      'Vehicle-to-Vehicle (V2V) & Vehicle-to-Load (V2L) Charging',
+      '12.3-inch Ultra-HD Cinematic Touchscreen',
+      'Arcade.ev In-Car App & Gaming Suite',
+      'Front Ventilated Comfort Seats',
+      'Paddle Shifters for Multi-Mode Regenerative Braking',
+      'Fast DC Charging (10% to 80% in 56 minutes)'
+    ],
+    isAvailable: true,
+    rating: 4.92,
+    reviewsCount: 50,
+    reviews: [
+      {
+        id: 'rev-nexonev-1',
+        userId: 'user-demo-1',
+        carId: 'car-ev-1',
+        rating: 5,
+        comment: 'Whisper quiet and instant acceleration at traffic lights. Charged easily at public fast chargers.',
+        userName: 'Praveen Nair',
+        createdAt: '2026-02-16T11:20:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-15T00:00:00Z')
+  },
+  {
+    id: 'car-ev-2',
+    brand: 'MG',
+    model: 'ZS EV Exclusive Plus',
+    year: 2024,
+    category: 'Electric',
+    pricePerDay: 2800,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT0IjNh6rsN6oysUVHgdblOE-5-Or8WlxO1mnozqsvLw&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1Gg7AuFCjGFq-f8fhHtpn3mgPhkdnh00VVOj5_5q4Vw&s=10'
+    ],
+    description: 'Premium global electric SUV with 50.3 kWh high-density battery, 461 km real-world range, dual-pane panoramic skyroof, 177 HP electric powertrain, and Level 2 ADAS safety tech.',
+    fuelType: 'Electric',
+    transmission: 'Automatic Single Speed',
+    seats: 5,
+    mileage: '461 km Range / Full Charge',
+    horsepower: 177,
+    acceleration: '8.5s (0-100 km/h)',
+    location: 'Delhi NCR, Bengaluru & Mumbai',
+    features: [
+      '50.3 kWh Prismatic Advanced Battery Pack',
+      'Dual-Pane Panoramic Skyroof',
+      'Level 2 ADAS Safety Suite with Traffic Jam Assist',
+      '360 Around View Camera with Dynamic Guidelines',
+      'i-SMART 75+ Connected Car Features',
+      'Wireless Phone Charger & PM 2.5 Air Filter'
+    ],
+    isAvailable: true,
+    rating: 4.88,
+    reviewsCount: 30,
+    reviews: [
+      {
+        id: 'rev-mgzs-1',
+        userId: 'user-demo-2',
+        carId: 'car-ev-2',
+        rating: 5,
+        comment: 'Very premium interior and panoramic roof makes the cabin feel super airy. Smooth driving dynamics.',
+        userName: 'Siddharth Sen',
+        createdAt: '2026-02-24T15:30:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-18T00:00:00Z')
+  },
+  {
+    id: 'car-ev-3',
+    brand: 'Tata',
+    model: 'Punch EV Empowered+ S',
+    year: 2024,
+    category: 'Electric',
+    pricePerDay: 1800,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxluwfjYOHMyw_-vNHExWhf8MzOShiU7iqH1zJsJp9-A&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2wvlJl4OC7fgWjKsUmj3OmihASyjSeP06GU-X0Q0oMA&s=10'
+    ],
+    description: 'Built on dedicated acti.ev pure electric platform. Compact dimensions, front frunk storage, 421 km range, 360-degree camera, electronic parking brake, and ultra-low running costs.',
+    fuelType: 'Electric',
+    transmission: 'Automatic Single Speed',
+    seats: 5,
+    mileage: '421 km Range / Full Charge',
+    horsepower: 122,
+    acceleration: '9.5s (0-100 km/h)',
+    location: 'Mumbai, Pune & Bengaluru',
+    features: [
+      'Pure EV acti.ev Dedicated Architecture',
+      'Front Frunk Storage Compartment',
+      'Electronic Parking Brake with Auto Hold',
+      'Dual 10.25-inch High-Definition Screens',
+      'Cabin Air Purifier with AQI Indicator',
+      'Front Ventilated Seats & Auto Dimming IRVM'
+    ],
+    isAvailable: true,
+    rating: 4.85,
+    reviewsCount: 24,
+    reviews: [
+      {
+        id: 'rev-punchev-1',
+        userId: 'user-demo-3',
+        carId: 'car-ev-3',
+        rating: 5,
+        comment: 'Ideal electric car for Mumbai city and weekend Pune trips. Auto hold in traffic is a bliss.',
+        userName: 'Meera Chawla',
+        createdAt: '2026-03-02T13:00:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-20T00:00:00Z')
+  },
+  {
+    id: 'car-ev-4',
+    brand: 'Mahindra',
+    model: 'XUV400 EL Pro 39.4 kWh',
+    year: 2024,
+    category: 'Electric',
+    pricePerDay: 2100,
+    images: [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVUbuNNBab_2cMIwSZScSgDOSAxJhQ_-CsFqetObiMTA&s=10',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJi6TQsHc0xy7XySvBa_hQ2PQO5hSLGmepSqP5KRotXQ&s=10'
+    ],
+    description: 'Spacious electric C-SUV with class-leading 2600mm wheelbase, 0-100 km/h in 8.3 seconds, 456 km range, dual 10.25-inch screens, and 3 custom driving modes (Fun, Fast, Fearless).',
+    fuelType: 'Electric',
+    transmission: 'Automatic Single Speed',
+    seats: 5,
+    mileage: '456 km Range / Full Charge',
+    horsepower: 150,
+    acceleration: '8.3s (0-100 km/h)',
+    location: 'Delhi NCR, Bengaluru & Hyderabad',
+    features: [
+      '3 Drive Modes: Fun, Fast, Fearless',
+      'Dual 10.25-inch Touchscreen & Digital Cluster',
+      'Class-Leading 2600mm Wheelbase for Extra Rear Legroom',
+      'IP67 Rated Waterproof Battery & Motor Pack',
+      'Single-Pedal Lively Drive Mode',
+      'Wireless Android Auto & Apple CarPlay'
+    ],
+    isAvailable: true,
+    rating: 4.8,
+    reviewsCount: 21,
+    reviews: [
+      {
+        id: 'rev-xuv400-1',
+        userId: 'user-demo-4',
+        carId: 'car-ev-4',
+        rating: 5,
+        comment: 'Fearless mode acceleration is thrilling! Plenty of legroom for 3 adults in the back seat.',
+        userName: 'Abhishek Roy',
+        createdAt: '2026-03-05T14:40:00Z'
+      }
+    ],
+    createdAt: new Date('2026-02-22T00:00:00Z')
+  }
+];
+
+export const demoUsers: User[] = [
+  {
+    id: 'admin-1',
+    name: 'Fleet Manager',
+    email: 'admin@carrental.com',
+    role: 'ADMIN',
+    phone: '+91 9067XXXX89',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+    createdAt: '2026-01-01T00:00:00Z'
+  },
+  {
+    id: 'customer-1',
+    name: 'Arjun Kapoor',
+    email: 'customer@carrental.com',
+    role: 'CUSTOMER',
+    phone: '+91 9123XXXX89',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+    createdAt: '2026-01-05T00:00:00Z'
+  }
+];
+
+export const initialBookings: Booking[] = [
+  {
+    id: 'bk-1001',
+    userId: 'customer-1',
+    carId: 'car-hatch-1',
+    startDate: new Date('2026-09-18T10:00:00Z'),
+    endDate: new Date('2026-09-20T18:00:00Z'),
+    totalDays: 2,
+    totalPrice: 2400,
+    customerName: 'Arjun Kapoor',
+    customerEmail: 'customer@carrental.com',
+    customerPhone: '+91 91234 56789',
+    utrNumber: '928471638201',
+    status: 'APPROVED',
+    paymentMethod: 'UPI_QR',
+    notes: 'Airport pick-up requested at Mumbai T2 terminal.',
+    car: initialCars[0],
+    createdAt: new Date('2026-09-14T09:15:00Z')
+  },
+  {
+    id: 'bk-1002',
+    userId: 'customer-1',
+    carId: 'car-suv-m1',
+    startDate: new Date('2026-09-25T08:00:00Z'),
+    endDate: new Date('2026-09-27T20:00:00Z'),
+    totalDays: 2,
+    totalPrice: 6000,
+    customerName: 'Devansh Verma',
+    customerEmail: 'devansh@example.com',
+    customerPhone: '+91 98888 11223',
+    utrNumber: '582910482918',
+    status: 'PENDING',
+    paymentMethod: 'UPI_QR',
+    notes: 'Please verify payment. Transferred from HDFC via Google Pay.',
+    car: initialCars[12],
+    createdAt: new Date('2026-09-14T14:30:00Z')
+  }
+];
