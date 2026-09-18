@@ -50,7 +50,10 @@ export default function AdminDashboardPage() {
 
   async function loadAnalytics() {
     try {
-      const res = await fetch('/api/analytics');
+      const res = await fetch(`/api/analytics?t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+      });
       const data = await res.json();
       if (res.ok) {
         setAnalytics(data);

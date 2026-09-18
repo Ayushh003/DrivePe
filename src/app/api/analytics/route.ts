@@ -4,12 +4,19 @@ import { authOptions } from '@/lib/auth';
 import { dbService } from '@/lib/db-service';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session || (session.user as any)?.role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Unauthorized: Admin privileges required' }, { status: 403 });
+      return NextResponse.json(
+        { error: 'Unauthorized: Admin privileges required' },
+        {
+          status: 403,
+          headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+        }
+      );
     }
 
     const [cars, bookings] = await Promise.all([
@@ -40,20 +47,31 @@ export async function GET() {
       categoryStats[c.category] = (categoryStats[c.category] || 0) + 1;
     });
 
-    return NextResponse.json({
-      totalRevenue,
-      pendingRevenue,
-      totalCars,
-      availableCars,
-      totalBookings,
-      activeBookings,
-      pendingBookings,
-      completedBookings,
-      categoryStats,
-      recentBookings: bookings.slice(0, 5),
-    });
+    return NextResponse.json(
+      {
+        totalRevenue,
+        pendingRevenue,
+        totalCars,
+        availableCars,
+        totalBookings,
+        activeBookings,
+        pendingBookings,
+        completedBookings,
+        categoryStats,
+        recentBookings: bookings.slice(0, 5),
+      },
+      {
+        headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+      }
+    );
   } catch (error: any) {
     console.error('Analytics fetch error:', error);
-    return NextResponse.json({ error: 'Failed to generate analytics report' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to generate analytics report' },
+      {
+        status: 500,
+        headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+      }
+    );
   }
 }

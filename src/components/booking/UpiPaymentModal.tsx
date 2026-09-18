@@ -37,9 +37,18 @@ export default function UpiPaymentModal({
 
   const [customerName, setCustomerName] = useState(session?.user?.name || '');
   const [customerEmail, setCustomerEmail] = useState(session?.user?.email || '');
-  const [customerPhone, setCustomerPhone] = useState('');
+  const [customerPhone, setCustomerPhone] = useState((session?.user as any)?.phone || '');
   const [utrNumber, setUtrNumber] = useState('');
   const [notes, setNotes] = useState('');
+
+  // Keep customer name and email in sync when session loads
+  useEffect(() => {
+    if (session?.user) {
+      if (!customerName && session.user.name) setCustomerName(session.user.name);
+      if (!customerEmail && session.user.email) setCustomerEmail(session.user.email);
+      if (!customerPhone && (session.user as any)?.phone) setCustomerPhone((session.user as any).phone);
+    }
+  }, [session, customerName, customerEmail, customerPhone]);
 
   const [copiedUpi, setCopiedUpi] = useState(false);
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
@@ -468,7 +477,7 @@ export default function UpiPaymentModal({
               <button
                 onClick={() => {
                   onClose();
-                  router.push('/my-bookings');
+                  window.location.href = '/my-bookings';
                 }}
                 className="btn-primary text-xs py-2.5 px-6"
               >

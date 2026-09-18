@@ -6,27 +6,45 @@ import { sendBookingRequestedEmails } from '@/lib/mail';
 import { calculateDaysBetween } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
-      return NextResponse.json({ error: 'Please log in to view bookings' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Please log in to view bookings' },
+        {
+          status: 401,
+          headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+        }
+      );
     }
 
     const userRole = (session.user as any)?.role;
     const userId = (session.user as any)?.id;
+    const userEmail = session.user?.email || undefined;
 
     if (userRole === 'ADMIN') {
       const allBookings = await dbService.getBookings();
-      return NextResponse.json(allBookings);
+      return NextResponse.json(allBookings, {
+        headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+      });
     }
 
-    const userBookings = await dbService.getBookings({ userId });
-    return NextResponse.json(userBookings);
+    const userBookings = await dbService.getBookings({ userId, email: userEmail });
+    return NextResponse.json(userBookings, {
+      headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+    });
   } catch (error: any) {
     console.error('Error fetching bookings:', error);
-    return NextResponse.json({ error: 'Failed to retrieve bookings' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to retrieve bookings' },
+      {
+        status: 500,
+        headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+      }
+    );
   }
 }
 
@@ -100,7 +118,10 @@ export async function POST(req: Request) {
         message: 'Booking submitted successfully. Pending UPI payment verification by administrator.',
         booking,
       },
-      { status: 201 }
+      {
+        status: 201,
+        headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+      }
     );
   } catch (error: any) {
     console.error('Error creating booking:', error);

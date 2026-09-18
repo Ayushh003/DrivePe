@@ -19,7 +19,8 @@ import {
   Mail, 
   Phone, 
   User, 
-  Calendar
+  Calendar,
+  RefreshCw
 } from 'lucide-react';
 import { Booking, BookingStatus } from '@/types';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -30,6 +31,7 @@ export default function AdminBookingsPage() {
 
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedUtr, setCopiedUtr] = useState<string | null>(null);
@@ -50,9 +52,13 @@ export default function AdminBookingsPage() {
     }
   }, [session, status, router]);
 
-  async function loadBookings() {
+  async function loadBookings(isManual = false) {
+    if (isManual) setRefreshing(true);
     try {
-      const res = await fetch('/api/bookings');
+      const res = await fetch(`/api/bookings?t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+      });
       const data = await res.json();
       if (Array.isArray(data)) {
         setBookings(data);
@@ -61,6 +67,7 @@ export default function AdminBookingsPage() {
       console.error('Failed to load bookings', e);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   }
 
@@ -132,18 +139,35 @@ export default function AdminBookingsPage() {
           <div>
             <Link
               href="/admin/dashboard"
-              className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-brand-600 mb-2"
+              className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-blue-600 mb-2"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Admin Overview</span>
             </Link>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
-              Verify Bookings & Payments
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
+                Verify Bookings & Payments
+              </h1>
+              {bookings.length > 0 && (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                  {bookings.length} Total
+                </span>
+              )}
+            </div>
             <p className="text-xs text-slate-500 mt-1">
               Check customer 12-digit UTR IDs with your UPI bank account to approve or reject reservations.
             </p>
           </div>
+
+          <button
+            onClick={() => loadBookings(true)}
+            disabled={refreshing}
+            className="self-start md:self-auto inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 shadow-xs transition-colors disabled:opacity-60"
+            title="Refresh bookings list"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-blue-600' : ''}`} />
+            <span>{refreshing ? 'Refreshing...' : 'Refresh Bookings'}</span>
+          </button>
         </div>
 
         {/* Filters Bar */}

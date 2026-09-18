@@ -170,39 +170,78 @@ export const dbService = {
   // ==========================================
   // BOOKINGS
   // ==========================================
-  async getBookings(query?: { userId?: string }): Promise<Booking[]> {
+  async getBookings(query?: { userId?: string; email?: string }): Promise<Booking[]> {
     const store = getStore();
 
-    const prismaResult = await runWithPrisma(async () => {
-      const where: any = {};
-      if (query?.userId) where.userId = query.userId;
-      const bookings = await prisma.booking.findMany({
-        where,
-        include: { car: true, user: true },
-        orderBy: { createdAt: 'desc' },
-      });
-      return bookings && bookings.length > 0 ? (bookings as any) : null;
+    // Ensure all store bookings have complete car details attached
+    store.bookings.forEach(b => {
+      if (!b.car || !b.car.brand) {
+        b.car = store.cars.find(c => c.id === b.carId) || b.car;
+      }
     });
 
-    if (prismaResult) return prismaResult;
+    const isHex24 = (str?: string | null) => !!str && /^[0-9a-fA-F]{24}$/.test(str);
 
-    let list = [...store.bookings];
-    if (query?.userId) {
-      list = list.filter(b => b.userId === query.userId);
+    // Sync with Prisma only if valid hex string or querying all (to avoid Malformed ObjectID errors)
+    let prismaBookings: any[] = [];
+    if (!query?.userId || isHex24(query.userId)) {
+      const prismaResult = await runWithPrisma(async () => {
+        const where: any = {};
+        if (query?.userId && isHex24(query.userId)) where.userId = query.userId;
+        const bookings = await prisma.booking.findMany({
+          where,
+          include: { car: true, user: true },
+          orderBy: { createdAt: 'desc' },
+        });
+        return bookings && bookings.length > 0 ? (bookings as any) : null;
+      }, 500);
+
+      if (prismaResult && Array.isArray(prismaResult)) {
+        prismaBookings = prismaResult;
+      }
     }
+
+    // Merge bookings by ID (store bookings always take precedence and include latest bookings)
+    const mergedMap = new Map<string, Booking>();
+    prismaBookings.forEach(b => mergedMap.set(b.id, b));
+    store.bookings.forEach(b => mergedMap.set(b.id, b));
+
+    let list = Array.from(mergedMap.values());
+
+    // Filter by userId OR customerEmail so customer bookings are ALWAYS found reliably
+    if (query?.userId || query?.email) {
+      const qUserId = query.userId;
+      const qEmail = query.email?.toLowerCase().trim();
+      list = list.filter(b => {
+        const matchId = !!(qUserId && b.userId === qUserId);
+        const matchEmail = !!(qEmail && b.customerEmail && b.customerEmail.toLowerCase().trim() === qEmail);
+        return matchId || matchEmail;
+      });
+    }
+
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   },
 
   async getBookingById(id: string): Promise<Booking | null> {
     const store = getStore();
+    const local = store.bookings.find(b => b.id === id);
+    if (local) {
+      if (!local.car || !local.car.brand) {
+        local.car = store.cars.find(c => c.id === local.carId) || local.car;
+      }
+      return local;
+    }
 
-    const prismaResult = await runWithPrisma(async () => {
-      const bk = await prisma.booking.findUnique({ where: { id }, include: { car: true, user: true } });
-      return bk ? (bk as any) : null;
-    });
+    const isHex24 = (str?: string | null) => !!str && /^[0-9a-fA-F]{24}$/.test(str);
+    if (isHex24(id)) {
+      const prismaResult = await runWithPrisma(async () => {
+        const bk = await prisma.booking.findUnique({ where: { id }, include: { car: true, user: true } });
+        return bk ? (bk as any) : null;
+      }, 500);
+      if (prismaResult) return prismaResult;
+    }
 
-    if (prismaResult) return prismaResult;
-    return store.bookings.find(b => b.id === id) || null;
+    return null;
   },
 
   async createBooking(data: {
@@ -234,7 +273,7 @@ export const dbService = {
     store.bookings.unshift(newBooking);
     saveStore(store);
 
-    // Sync with Prisma
+    // Sync with Prisma in background if IDs are valid ObjectIds
     const isHex24 = (str?: string | null) => !!str && /^[0-9a-fA-F]{24}$/.test(str);
     if (isHex24(data.carId)) {
       runWithPrisma(async () => {
@@ -247,7 +286,7 @@ export const dbService = {
           },
           include: { car: true },
         });
-      }).catch(() => {});
+      }, 500).catch(() => {});
     }
 
     return newBooking;
@@ -256,22 +295,30 @@ export const dbService = {
   async updateBookingStatus(id: string, status: BookingStatus): Promise<Booking | null> {
     const store = getStore();
     const idx = store.bookings.findIndex(b => b.id === id);
+    let updated: Booking | null = null;
     if (idx !== -1) {
       store.bookings[idx].status = status;
       store.bookings[idx].updatedAt = new Date();
+      if (!store.bookings[idx].car) {
+        store.bookings[idx].car = store.cars.find(c => c.id === store.bookings[idx].carId) || undefined;
+      }
       saveStore(store);
+      updated = store.bookings[idx];
     }
 
     // Sync with Prisma
-    runWithPrisma(async () => {
-      return prisma.booking.update({
-        where: { id },
-        data: { status },
-        include: { car: true, user: true },
-      });
-    }).catch(() => {});
+    const isHex24 = (str?: string | null) => !!str && /^[0-9a-fA-F]{24}$/.test(str);
+    if (isHex24(id)) {
+      runWithPrisma(async () => {
+        return prisma.booking.update({
+          where: { id },
+          data: { status },
+          include: { car: true, user: true },
+        });
+      }, 500).catch(() => {});
+    }
 
-    return idx !== -1 ? store.bookings[idx] : null;
+    return updated;
   },
 
   // ==========================================

@@ -892,9 +892,261 @@
       "role": "CUSTOMER",
       "phone": "ayushhyadav.003@gmail.com",
       "createdAt": "2026-09-16T07:19:46.119Z"
+    },
+    {
+      "id": "user-1789716045401",
+      "name": "Utkarsh",
+      "email": "ut123456@gmail.com",
+      "password": "$2a$10$yxrQ8nBvgmwosdCVqnrhoOqkPQ3NRGuSBnnBoNJdbd8k5tPhs854.",
+      "role": "CUSTOMER",
+      "phone": "8756453423",
+      "createdAt": "2026-09-18T07:20:45.401Z"
     }
   ],
   "bookings": [
+    {
+      "id": "bk-784622",
+      "userId": "customer-1",
+      "carId": "car-cross-4",
+      "startDate": "2026-09-18T00:00:00.000Z",
+      "endDate": "2026-09-20T00:00:00.000Z",
+      "totalDays": 2,
+      "totalPrice": 3200,
+      "customerName": "Arjun Kapoor",
+      "customerEmail": "customer@carrental.com",
+      "customerPhone": "90078434312",
+      "utrNumber": "123212431232",
+      "notes": null,
+      "status": "COMPLETED",
+      "paymentMethod": "UPI_QR",
+      "car": {
+        "id": "car-cross-4",
+        "brand": "Nissan",
+        "model": "Magnite XV Premium Turbo",
+        "year": 2024,
+        "category": "Crossover",
+        "pricePerDay": 1600,
+        "images": [
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcG4QZqy_cYviYtOwxGg8qrDlVE-3vqwinyH1YlskwFg&s=10"
+        ],
+        "description": "Bold Japanese crossover featuring responsive HRA0 1.0L turbo engine, smooth CVT transmission, 205mm ground clearance, and punchy JBL audio system.",
+        "fuelType": "Turbo Petrol",
+        "transmission": "X-TRONIC CVT Automatic",
+        "seats": 5,
+        "mileage": "20.0 km/l",
+        "horsepower": 100,
+        "acceleration": "10.2s (0-100 km/h)",
+        "location": "Mumbai, Delhi NCR & Hyderabad",
+        "features": [
+          "Around View 360-Degree Camera",
+          "JBL Premium Acoustic Audio",
+          "205mm Segment-Leading Ground Clearance",
+          "7-inch Virtual Driver Instrument Cluster",
+          "Wireless Apple CarPlay & Android Auto",
+          "Vehicle Dynamic Control & Hill Start Assist"
+        ],
+        "isAvailable": true,
+        "rating": 4.75,
+        "reviewsCount": 17,
+        "reviews": [
+          {
+            "id": "rev-magnite-1",
+            "userId": "user-demo-4",
+            "carId": "car-cross-4",
+            "rating": 5,
+            "comment": "CVT automatic is buttery smooth in bumper to bumper traffic. Great value rental.",
+            "userName": "Vikram Joshi",
+            "createdAt": "2026-03-04T12:00:00Z"
+          }
+        ],
+        "createdAt": "2026-01-27T00:00:00.000Z"
+      },
+      "createdAt": "2026-09-18T07:16:24.622Z",
+      "updatedAt": "2026-09-18T07:18:09.931Z"
+    },
+    {
+      "id": "bk-479149",
+      "userId": "customer-1",
+      "carId": "car-suv-m1",
+      "startDate": "2026-09-22T00:00:00.000Z",
+      "endDate": "2026-09-25T00:00:00.000Z",
+      "totalDays": 3,
+      "totalPrice": 9000,
+      "customerName": "Arjun Kapoor",
+      "customerEmail": "customer@carrental.com",
+      "customerPhone": "9876501234",
+      "utrNumber": "UTR15476494",
+      "notes": "Verification test booking",
+      "status": "APPROVED",
+      "paymentMethod": "UPI_QR",
+      "car": {
+        "id": "car-suv-m1",
+        "brand": "Mahindra",
+        "model": "Scorpio-N Z8L 4XPLOR",
+        "year": 2024,
+        "category": "SUV",
+        "pricePerDay": 3000,
+        "images": [
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-D7NUi5pOYNjq7nbjZwjX8tOs5mhlRTfdtYe-F_jVRw&s=10",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7RB5DxEUZKcm8ukLMnKcwbxxwU2nOoVYKAhZLFT8pkA&s=10"
+        ],
+        "description": "The Big Daddy of SUVs. Built on a rugged ladder-frame chassis with 2.2L mHawk diesel engine, 4XPLOR terrain modes (Snow, Mud, Sand), and luxurious Sony 12-speaker 3D audio.",
+        "fuelType": "Diesel",
+        "transmission": "6-Speed Automatic 4WD",
+        "seats": 7,
+        "mileage": "14.5 km/l",
+        "horsepower": 175,
+        "acceleration": "9.8s (0-100 km/h)",
+        "location": "Delhi NCR, Mumbai & Chandigarh",
+        "features": [
+          "4XPLOR Intelligent Terrain Management (Snow, Mud, Sand)",
+          "Sony 12-Speaker 3D Immersive Audio",
+          "Electric Sunroof & Dual Zone FATC Climate Control",
+          "Plush Rich Coffee Black Leatherette Captain Seats",
+          "Penta-link Rear Suspension with FDD Technology",
+          "Wireless Phone Charger & AdrenoX Connect"
+        ],
+        "isAvailable": true,
+        "rating": 4.95,
+        "reviewsCount": 52,
+        "reviews": [
+          {
+            "id": "rev-scorpio-1",
+            "userId": "user-demo-1",
+            "carId": "car-suv-m1",
+            "rating": 5,
+            "comment": "Road presence is unmatched! Took it to Himachal for 5 days. Drove over slush and snow with zero hiccups.",
+            "userName": "Jaspreet Singh",
+            "createdAt": "2026-02-15T18:00:00Z"
+          }
+        ],
+        "createdAt": "2026-02-05T00:00:00.000Z"
+      },
+      "createdAt": "2026-09-18T07:11:19.149Z",
+      "updatedAt": "2026-09-18T07:11:21.208Z"
+    },
+    {
+      "id": "bk-928425",
+      "userId": "customer-1",
+      "carId": "car-hatch-1",
+      "startDate": "2026-09-20T00:00:00.000Z",
+      "endDate": "2026-09-22T00:00:00.000Z",
+      "totalDays": 2,
+      "totalPrice": 2400,
+      "customerName": "Arjun Kapoor",
+      "customerEmail": "customer@carrental.com",
+      "customerPhone": "9876543210",
+      "utrNumber": "998877665544",
+      "notes": "Test booking from automated script",
+      "status": "REJECTED",
+      "paymentMethod": "UPI_QR",
+      "car": {
+        "id": "car-hatch-1",
+        "brand": "Maruti Suzuki",
+        "model": "Swift ZXi+",
+        "year": 2024,
+        "category": "Hatchback",
+        "pricePerDay": 1200,
+        "images": [
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ31LGFOPMlXZDb2wnZsWo8AaUMnpTnXDbaYmIgGUHOPg&s=10",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV84e259aXvHOOf7OEaXs-r12ArG-i9aEZjIlnVBzMtg&s=10"
+        ],
+        "description": "India’s favorite sporty hatchback offering peppy performance, exceptional fuel economy, and effortless city maneuverability. Equipped with modern SmartPlay touchscreen and auto climate control.",
+        "fuelType": "Petrol",
+        "transmission": "5-Speed Manual",
+        "seats": 5,
+        "mileage": "24.8 km/l",
+        "horsepower": 82,
+        "acceleration": "11.2s (0-100 km/h)",
+        "location": "Mumbai, Delhi NCR & Bengaluru",
+        "features": [
+          "SmartPlay Pro+ 9-inch Touchscreen",
+          "Cruise Control",
+          "LED Projector Headlamps with DRLs",
+          "Rear Parking Camera with Sensors",
+          "Dual Front Airbags & ABS with EBD",
+          "Push Button Engine Start/Stop"
+        ],
+        "isAvailable": true,
+        "rating": 4.8,
+        "reviewsCount": 34,
+        "reviews": [
+          {
+            "id": "rev-swift-1",
+            "userId": "user-demo-1",
+            "carId": "car-hatch-1",
+            "rating": 5,
+            "comment": "Super easy to drive in heavy city traffic. Mileage was outstanding and pick-up was super smooth.",
+            "userName": "Aarav Sharma",
+            "createdAt": "2026-02-14T10:30:00Z"
+          }
+        ],
+        "createdAt": "2026-01-10T00:00:00.000Z"
+      },
+      "createdAt": "2026-09-18T07:02:08.425Z",
+      "updatedAt": "2026-09-18T07:18:15.213Z"
+    },
+    {
+      "id": "bk-892781",
+      "userId": "customer-1",
+      "carId": "car-hatch-1",
+      "startDate": "2026-09-20T00:00:00.000Z",
+      "endDate": "2026-09-22T00:00:00.000Z",
+      "totalDays": 2,
+      "totalPrice": 2400,
+      "customerName": "Arjun Kapoor",
+      "customerEmail": "customer@carrental.com",
+      "customerPhone": "9876543210",
+      "utrNumber": "998877665544",
+      "notes": "Test booking from automated script",
+      "status": "REJECTED",
+      "paymentMethod": "UPI_QR",
+      "car": {
+        "id": "car-hatch-1",
+        "brand": "Maruti Suzuki",
+        "model": "Swift ZXi+",
+        "year": 2024,
+        "category": "Hatchback",
+        "pricePerDay": 1200,
+        "images": [
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ31LGFOPMlXZDb2wnZsWo8AaUMnpTnXDbaYmIgGUHOPg&s=10",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV84e259aXvHOOf7OEaXs-r12ArG-i9aEZjIlnVBzMtg&s=10"
+        ],
+        "description": "India’s favorite sporty hatchback offering peppy performance, exceptional fuel economy, and effortless city maneuverability. Equipped with modern SmartPlay touchscreen and auto climate control.",
+        "fuelType": "Petrol",
+        "transmission": "5-Speed Manual",
+        "seats": 5,
+        "mileage": "24.8 km/l",
+        "horsepower": 82,
+        "acceleration": "11.2s (0-100 km/h)",
+        "location": "Mumbai, Delhi NCR & Bengaluru",
+        "features": [
+          "SmartPlay Pro+ 9-inch Touchscreen",
+          "Cruise Control",
+          "LED Projector Headlamps with DRLs",
+          "Rear Parking Camera with Sensors",
+          "Dual Front Airbags & ABS with EBD",
+          "Push Button Engine Start/Stop"
+        ],
+        "isAvailable": true,
+        "rating": 4.8,
+        "reviewsCount": 34,
+        "reviews": [
+          {
+            "id": "rev-swift-1",
+            "userId": "user-demo-1",
+            "carId": "car-hatch-1",
+            "rating": 5,
+            "comment": "Super easy to drive in heavy city traffic. Mileage was outstanding and pick-up was super smooth.",
+            "userName": "Aarav Sharma",
+            "createdAt": "2026-02-14T10:30:00Z"
+          }
+        ],
+        "createdAt": "2026-01-10T00:00:00.000Z"
+      },
+      "createdAt": "2026-09-18T07:01:32.781Z",
+      "updatedAt": "2026-09-18T07:18:16.058Z"
+    },
     {
       "id": "bk-325908",
       "userId": "user-1789543186119",

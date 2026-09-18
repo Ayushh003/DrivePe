@@ -13,7 +13,8 @@ import {
   ArrowRight, 
   QrCode, 
   Car as CarIcon,
-  MessageSquare
+  MessageSquare,
+  RefreshCw
 } from 'lucide-react';
 import { Booking } from '@/types';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -22,6 +23,7 @@ export default function MyBookingsPage() {
   const { data: session, status } = useSession();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Review Modal state
   const [reviewCarId, setReviewCarId] = useState<string | null>(null);
@@ -31,20 +33,26 @@ export default function MyBookingsPage() {
   const [submittingReview, setSubmittingReview] = useState(false);
   const [reviewSuccess, setReviewSuccess] = useState(false);
 
-  useEffect(() => {
-    async function fetchBookings() {
-      try {
-        const res = await fetch('/api/bookings');
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          setBookings(data);
-        }
-      } catch (e) {
-        console.error('Failed to load bookings', e);
-      } finally {
-        setLoading(false);
+  const fetchBookings = async (isManual = false) => {
+    if (isManual) setRefreshing(true);
+    try {
+      const res = await fetch(`/api/bookings?t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+      });
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setBookings(data);
       }
+    } catch (e) {
+      console.error('Failed to load bookings', e);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
     }
+  };
+
+  useEffect(() => {
     if (session) {
       fetchBookings();
     } else if (status === 'unauthenticated') {
@@ -150,16 +158,35 @@ export default function MyBookingsPage() {
     <div className="min-h-screen bg-slate-50 text-slate-900 py-10">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <span className="text-xs font-semibold uppercase text-brand-600 tracking-wider block mb-1">
-            Account
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
-            My Bookings & Payments
-          </h1>
-          <p className="text-sm text-slate-600 mt-1">
-            Check payment verification status and view pickup instructions for your booked cars.
-          </p>
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span className="text-xs font-semibold uppercase text-blue-600 tracking-wider block mb-1">
+              Account
+            </span>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
+                My Bookings & Payments
+              </h1>
+              {bookings.length > 0 && (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                  {bookings.length} {bookings.length === 1 ? 'Booking' : 'Bookings'}
+                </span>
+              )}
+            </div>
+            <p className="text-sm text-slate-600 mt-1">
+              Check payment verification status and view pickup instructions for your booked cars.
+            </p>
+          </div>
+
+          <button
+            onClick={() => fetchBookings(true)}
+            disabled={refreshing}
+            className="self-start sm:self-auto inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 shadow-xs transition-colors disabled:opacity-60"
+            title="Refresh bookings list"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-blue-600' : ''}`} />
+            <span>{refreshing ? 'Refreshing...' : 'Refresh'}</span>
+          </button>
         </div>
 
         {/* Bookings List */}
