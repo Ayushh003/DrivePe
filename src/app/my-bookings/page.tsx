@@ -41,11 +41,37 @@ export default function MyBookingsPage() {
         headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
       });
       const data = await res.json();
-      if (Array.isArray(data)) {
-        setBookings(data);
-      }
+      let list = Array.isArray(data) ? [...data] : [];
+
+      // Merge with browser local storage backup for 100% reliability on serverless/Vercel
+      try {
+        const localSaved = JSON.parse(localStorage.getItem('drivepe_customer_bookings') || '[]');
+        if (Array.isArray(localSaved) && localSaved.length > 0) {
+          const userEmail = session?.user?.email?.toLowerCase().trim();
+          const userId = (session?.user as any)?.id;
+          localSaved.forEach((lb: Booking) => {
+            const matchesUser =
+              (!userEmail && !userId) ||
+              (userEmail && lb.customerEmail && lb.customerEmail.toLowerCase().trim() === userEmail) ||
+              (userId && lb.userId === userId);
+
+            if (matchesUser && !list.some(b => b.id === lb.id || (b.utrNumber && b.utrNumber === lb.utrNumber))) {
+              list.push(lb);
+            }
+          });
+        }
+      } catch {}
+
+      setBookings(list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
     } catch (e) {
       console.error('Failed to load bookings', e);
+      // Fallback directly to localStorage if network error
+      try {
+        const localSaved = JSON.parse(localStorage.getItem('drivepe_customer_bookings') || '[]');
+        if (Array.isArray(localSaved) && localSaved.length > 0) {
+          setBookings(localSaved);
+        }
+      } catch {}
     } finally {
       setLoading(false);
       setRefreshing(false);

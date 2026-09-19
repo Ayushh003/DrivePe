@@ -138,6 +138,16 @@ export default function UpiPaymentModal({
       setIsSuccess(true);
       setSubmittedBookingId(data.booking?.id || 'NEW');
 
+      // Backup to localStorage so customer never loses this booking even across serverless restarts
+      if (data.booking) {
+        try {
+          const key = 'drivepe_customer_bookings';
+          const prev = JSON.parse(localStorage.getItem(key) || '[]');
+          const filtered = prev.filter((b: any) => b.id !== data.booking.id && b.utrNumber !== data.booking.utrNumber);
+          localStorage.setItem(key, JSON.stringify([data.booking, ...filtered]));
+        } catch {}
+      }
+
       confetti({
         particleCount: 100,
         spread: 70,

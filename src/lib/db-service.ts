@@ -4,8 +4,12 @@ import { prisma } from './prisma';
 import { initialCars, demoUsers, initialBookings } from './mockData';
 import { Car, Booking, User, Review, BookingStatus } from '@/types';
 
-// Persistent file storage directory and file path
-const DATA_DIR = path.join(process.cwd(), 'src', 'data');
+// Persistent file storage directory and file path (Supports Vercel serverless /tmp)
+const IS_VERCEL = !!process.env.VERCEL;
+const BUNDLED_DIR = path.join(process.cwd(), 'src', 'data');
+const BUNDLED_FILE = path.join(BUNDLED_DIR, 'store.json');
+
+const DATA_DIR = IS_VERCEL ? path.join('/tmp', 'drivepe-data') : BUNDLED_DIR;
 const STORE_FILE = path.join(DATA_DIR, 'store.json');
 
 interface StoreData {
@@ -21,6 +25,17 @@ function getStore(): StoreData {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
+
+    // On Vercel, if /tmp store doesn't exist yet, seed it from bundled store.json
+    if (!fs.existsSync(STORE_FILE) && fs.existsSync(BUNDLED_FILE)) {
+      try {
+        const bundledContent = fs.readFileSync(BUNDLED_FILE, 'utf-8');
+        fs.writeFileSync(STORE_FILE, bundledContent, 'utf-8');
+      } catch (copyErr) {
+        console.warn('[db-service] Could not seed /tmp store from bundled file:', copyErr);
+      }
+    }
+
     if (fs.existsSync(STORE_FILE)) {
       const raw = fs.readFileSync(STORE_FILE, 'utf-8');
       const data = JSON.parse(raw);

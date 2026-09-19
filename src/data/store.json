@@ -905,6 +905,66 @@
   ],
   "bookings": [
     {
+      "id": "bk-930238",
+      "userId": "customer-1",
+      "carId": "car-hatch-2",
+      "startDate": "2026-09-21T00:00:00.000Z",
+      "endDate": "2026-09-23T00:00:00.000Z",
+      "totalDays": 2,
+      "totalPrice": 2800,
+      "customerName": "Arjun Kapoor",
+      "customerEmail": "customer@carrental.com",
+      "customerPhone": "9876543210",
+      "utrNumber": "UTR1789815926117",
+      "notes": null,
+      "status": "PENDING",
+      "paymentMethod": "UPI_QR",
+      "car": {
+        "id": "car-hatch-2",
+        "brand": "Hyundai",
+        "model": "i20 Asta (O)",
+        "year": 2024,
+        "category": "Hatchback",
+        "pricePerDay": 1400,
+        "images": [
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToTiqEFm9wL64_3l0C-iTOke5Xh2vM7EIpnXqa-2C2XA&s=10"
+        ],
+        "description": "Premium hatchback offering European styling, a plush feature-packed cabin, electric sunroof, and concert-like Bose audio for weekend highway drives and daily commutes.",
+        "fuelType": "Petrol",
+        "transmission": "IVT Automatic",
+        "seats": 5,
+        "mileage": "20.0 km/l",
+        "horsepower": 87,
+        "acceleration": "11.8s (0-100 km/h)",
+        "location": "Delhi NCR, Mumbai & Bengaluru",
+        "features": [
+          "Bose 7-Speaker Premium Sound System",
+          "Electric Sunroof",
+          "10.25-inch Touchscreen with Navigation",
+          "Wireless Smartphone Charger",
+          "6 Airbags as Standard",
+          "Bluelink Connected Car Technology"
+        ],
+        "isAvailable": true,
+        "rating": 4.9,
+        "reviewsCount": 28,
+        "reviews": [
+          {
+            "id": "rev-i20-1",
+            "userId": "user-demo-2",
+            "carId": "car-hatch-2",
+            "rating": 5,
+            "comment": "The Bose speakers and sunroof made the road trip feel very premium. Highly recommended!",
+            "userName": "Pooja Verma",
+            "createdAt": "2026-02-20T14:15:00Z"
+          }
+        ],
+        "createdAt": "2026-01-12T00:00:00.000Z"
+      },
+      "createdAt": "2026-09-19T11:05:30.238Z",
+      "updatedAt": "2026-09-19T11:05:30.238Z"
+    },
+    {
       "id": "bk-784622",
       "userId": "customer-1",
       "carId": "car-cross-4",
