@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { prisma } from './prisma';
+import { getMongoDb } from './mongodb';
 import { initialCars, demoUsers, initialBookings } from './mockData';
 import { Car, Booking, User, Review, BookingStatus } from '@/types';
 
@@ -195,31 +196,31 @@ export const dbService = {
       }
     });
 
-    const isHex24 = (str?: string | null) => !!str && /^[0-9a-fA-F]{24}$/.test(str);
-
-    // Sync with Prisma only if valid hex string or querying all (to avoid Malformed ObjectID errors)
-    let prismaBookings: any[] = [];
-    if (!query?.userId || isHex24(query.userId)) {
-      const prismaResult = await runWithPrisma(async () => {
-        const where: any = {};
-        if (query?.userId && isHex24(query.userId)) where.userId = query.userId;
-        const bookings = await prisma.booking.findMany({
-          where,
-          include: { car: true, user: true },
-          orderBy: { createdAt: 'desc' },
-        });
-        return bookings && bookings.length > 0 ? (bookings as any) : null;
-      }, 500);
-
-      if (prismaResult && Array.isArray(prismaResult)) {
-        prismaBookings = prismaResult;
-      }
-    }
-
-    // Merge bookings by ID (store bookings always take precedence and include latest bookings)
     const mergedMap = new Map<string, Booking>();
-    prismaBookings.forEach(b => mergedMap.set(b.id, b));
+    // 1. First populate with local store bookings
     store.bookings.forEach(b => mergedMap.set(b.id, b));
+
+    // 2. Fetch from MongoDB Atlas directly (central source of truth across all Vercel Lambdas)
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        const mongoBookings = await db.collection('Booking').find({}).sort({ createdAt: -1 }).toArray();
+        if (mongoBookings && mongoBookings.length > 0) {
+          mongoBookings.forEach((doc: any) => {
+            const bId = doc.id || doc._id?.toString();
+            const bObj: Booking = {
+              ...doc,
+              id: bId,
+              car: doc.car || store.cars.find(c => c.id === doc.carId),
+            };
+            delete (bObj as any)._id;
+            mergedMap.set(bId, bObj);
+          });
+        }
+      }
+    } catch (err) {
+      console.warn('[db-service] MongoDB Atlas getBookings warning:', err);
+    }
 
     let list = Array.from(mergedMap.values());
 
@@ -247,13 +248,22 @@ export const dbService = {
       return local;
     }
 
-    const isHex24 = (str?: string | null) => !!str && /^[0-9a-fA-F]{24}$/.test(str);
-    if (isHex24(id)) {
-      const prismaResult = await runWithPrisma(async () => {
-        const bk = await prisma.booking.findUnique({ where: { id }, include: { car: true, user: true } });
-        return bk ? (bk as any) : null;
-      }, 500);
-      if (prismaResult) return prismaResult;
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        const doc: any = await db.collection('Booking').findOne({ id });
+        if (doc) {
+          const bObj: Booking = {
+            ...doc,
+            id: doc.id || doc._id?.toString(),
+            car: doc.car || store.cars.find(c => c.id === doc.carId),
+          };
+          delete (bObj as any)._id;
+          return bObj;
+        }
+      }
+    } catch (err) {
+      console.warn('[db-service] MongoDB Atlas getBookingById warning:', err);
     }
 
     return null;
@@ -285,23 +295,22 @@ export const dbService = {
       updatedAt: new Date(),
     };
 
+    // 1. Save to local /tmp or disk store
     store.bookings.unshift(newBooking);
     saveStore(store);
 
-    // Sync with Prisma in background if IDs are valid ObjectIds
-    const isHex24 = (str?: string | null) => !!str && /^[0-9a-fA-F]{24}$/.test(str);
-    if (isHex24(data.carId)) {
-      runWithPrisma(async () => {
-        return prisma.booking.create({
-          data: {
-            ...data,
-            userId: isHex24(data.userId) ? data.userId : null,
-            status: 'PENDING',
-            paymentMethod: 'UPI_QR',
-          },
-          include: { car: true },
-        });
-      }, 500).catch(() => {});
+    // 2. Persist to MongoDB Atlas directly (Syncs to Admin across all devices & Vercel lambdas)
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection('Booking').updateOne(
+          { id: newBooking.id },
+          { $set: newBooking },
+          { upsert: true }
+        );
+      }
+    } catch (err) {
+      console.warn('[db-service] MongoDB Atlas createBooking warning:', err);
     }
 
     return newBooking;
@@ -321,16 +330,24 @@ export const dbService = {
       updated = store.bookings[idx];
     }
 
-    // Sync with Prisma
-    const isHex24 = (str?: string | null) => !!str && /^[0-9a-fA-F]{24}$/.test(str);
-    if (isHex24(id)) {
-      runWithPrisma(async () => {
-        return prisma.booking.update({
-          where: { id },
-          data: { status },
-          include: { car: true, user: true },
-        });
-      }, 500).catch(() => {});
+    // Persist status change to MongoDB Atlas
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection('Booking').updateOne(
+          { id },
+          { $set: { status, updatedAt: new Date() } }
+        );
+        if (!updated) {
+          const doc: any = await db.collection('Booking').findOne({ id });
+          if (doc) {
+            delete doc._id;
+            updated = doc as Booking;
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('[db-service] MongoDB Atlas updateBookingStatus warning:', err);
     }
 
     return updated;
@@ -395,20 +412,27 @@ export const dbService = {
       return localUser;
     }
 
-    // 2. Also check Prisma MongoDB if available
-    const prismaUser = await runWithPrisma(async () => {
-      const user = await prisma.user.findUnique({ where: { email: cleanEmail } });
-      return user ? (user as any) : null;
-    });
-
-    if (prismaUser) {
-      // Sync to local store so subsequent lookups are instant
-      const exists = store.users.some(u => u.email.toLowerCase().trim() === cleanEmail);
-      if (!exists) {
-        store.users.push(prismaUser);
-        saveStore(store);
+    // 2. Also check MongoDB Atlas
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        const userDoc: any = await db.collection('User').findOne({ email: cleanEmail });
+        if (userDoc) {
+          const u: User = {
+            ...userDoc,
+            id: userDoc.id || userDoc._id?.toString(),
+          };
+          delete (u as any)._id;
+          const exists = store.users.some(u => u.email.toLowerCase().trim() === cleanEmail);
+          if (!exists) {
+            store.users.push(u);
+            saveStore(store);
+          }
+          return u;
+        }
       }
-      return prismaUser;
+    } catch (err) {
+      console.warn('[db-service] MongoDB Atlas getUserByEmail warning:', err);
     }
 
     return null;
@@ -437,18 +461,19 @@ export const dbService = {
     }
     saveStore(store);
 
-    // 2. Try persisting to Prisma MongoDB
-    runWithPrisma(async () => {
-      return prisma.user.create({
-        data: {
-          name: data.name,
-          email: cleanEmail,
-          password: data.password || '',
-          role: data.role || 'CUSTOMER',
-          phone: data.phone,
-        },
-      });
-    }).catch(() => {});
+    // 2. Persist to MongoDB Atlas
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection('User').updateOne(
+          { email: cleanEmail },
+          { $set: newUser },
+          { upsert: true }
+        );
+      }
+    } catch (err) {
+      console.warn('[db-service] MongoDB Atlas createUser warning:', err);
+    }
 
     return newUser;
   },

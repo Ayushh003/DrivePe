@@ -54,11 +54,16 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Incorrect password. Please try again.');
         }
 
+        const isAdminEmail = 
+          email === 'admin@carrental.com' ||
+          email === (process.env.ADMIN_NOTIFICATION_EMAIL || '').toLowerCase().trim() ||
+          email === 'ayushhyadav.003@gmail.com';
+
         return {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role,
+          role: isAdminEmail ? 'ADMIN' : user.role,
         };
       },
     }),
