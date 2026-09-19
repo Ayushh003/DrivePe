@@ -1,7 +1,6 @@
 import { MongoClient, Db } from 'mongodb';
 
-const DEFAULT_MONGO_URI = 'mongodb+srv://ayushhyadav003_db_user:wd92m2B5UgAy1dcZ@cluster0.e0dvycy.mongodb.net/drivepe?retryWrites=true&w=majority';
-const uri = process.env.DATABASE_URL || DEFAULT_MONGO_URI;
+const uri = process.env.DATABASE_URL || '';
 
 let client: MongoClient | null = null;
 let clientPromise: Promise<MongoClient> | null = null;
