@@ -9,7 +9,7 @@ const nextConfig = {
     ],
   },
   experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs', 'nodemailer'],
+    serverComponentsExternalPackages: ['@prisma/client', 'mongodb', 'bcryptjs', 'nodemailer'],
   },
 };
 
