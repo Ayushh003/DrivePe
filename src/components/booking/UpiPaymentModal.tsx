@@ -52,36 +52,39 @@ export default function UpiPaymentModal({
 
   const [copiedUpi, setCopiedUpi] = useState(false);
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
+  const [upiPaymentUri, setUpiPaymentUri] = useState<string>('');
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [submittedBookingId, setSubmittedBookingId] = useState('');
 
-  const upiId = process.env.NEXT_PUBLIC_ADMIN_UPI_ID || 'drivepe@okaxis';
+  const upiId = process.env.NEXT_PUBLIC_ADMIN_UPI_ID || '9058475158003.wallet@phonepe';
   const upiName = process.env.NEXT_PUBLIC_ADMIN_UPI_NAME || 'DrivePe Mobility';
-  const qrImage = process.env.NEXT_PUBLIC_ADMIN_QR_IMAGE || '/images/qr/phonepe-qr.jpg';
 
   const totalDays = calculateDaysBetween(startDate, endDate);
   const rentalTotal = totalDays * car.pricePerDay;
   const securityDeposit = Math.round(car.pricePerDay * 0.2); // 20% refundable deposit
   const grandTotal = rentalTotal + securityDeposit;
 
-  // Generate real UPI Pay URI and render QR (used as fallback or for dynamic apps)
+  // Generate real dynamic UPI Pay URI and render dynamic QR code with exact grandTotal price
   useEffect(() => {
     const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(
       upiName
     )}&am=${grandTotal}&cu=INR&tn=${encodeURIComponent(`Booking-${car.brand}-${car.model}`)}`;
 
+    setUpiPaymentUri(upiUri);
+
     QRCode.toDataURL(upiUri, {
-      width: 240,
+      width: 260,
       margin: 2,
       color: {
         dark: '#0f172a',
         light: '#ffffff',
       },
+      errorCorrectionLevel: 'H',
     })
       .then((url) => setQrDataUrl(url))
-      .catch((err) => console.error('Failed to generate QR code', err));
+      .catch((err) => console.error('Failed to generate dynamic QR code', err));
   }, [upiId, upiName, grandTotal, car]);
 
   const handleCopyUpi = () => {
@@ -247,25 +250,43 @@ export default function UpiPaymentModal({
             )}
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* Left: QR Code & UPI */}
+              {/* Left: Dynamic QR Code & UPI */}
               <div className="lg:col-span-5 flex flex-col items-center justify-center p-5 rounded-3xl bg-slate-50/90 border border-slate-200/80 text-center shadow-xs">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-[11px] font-bold border border-purple-200/60 mb-3 shadow-xs">
-                  <span>⚡ Scan & Pay with Any UPI App</span>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-bold border border-blue-200/60 mb-3 shadow-xs">
+                  <span>⚡ Dynamic Amount UPI QR Code</span>
                 </div>
 
-                {/* QR Code Container - Clean Zoomed Square */}
-                <div className="p-3 bg-black rounded-2xl shadow-md border border-slate-800 mb-3 overflow-hidden flex items-center justify-center group">
-                  <img
-                    src={qrImage}
-                    alt="Official UPI QR Code"
-                    className="w-44 h-44 object-contain rounded-xl transition-transform duration-300 group-hover:scale-105"
-                    onError={(e) => {
-                      if (qrDataUrl) {
-                        (e.target as HTMLImageElement).src = qrDataUrl;
-                      }
-                    }}
-                  />
+                {/* Dynamic QR Code Container */}
+                <div className="relative p-3.5 bg-white rounded-2xl shadow-md border border-slate-200 mb-3 overflow-hidden flex flex-col items-center justify-center group">
+                  {qrDataUrl ? (
+                    <img
+                      src={qrDataUrl}
+                      alt={`Dynamic UPI QR Code for ₹${grandTotal}`}
+                      className="w-48 h-48 object-contain rounded-xl transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-48 h-48 flex items-center justify-center bg-slate-100 rounded-xl">
+                      <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  )}
+
+                  {/* Auto-filled amount tag */}
+                  <div className="mt-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Amount: {formatCurrency(grandTotal)} prefilled</span>
+                  </div>
                 </div>
+
+                {/* Direct Pay Link for Mobile Users */}
+                {upiPaymentUri && (
+                  <a
+                    href={upiPaymentUri}
+                    className="sm:hidden w-full mb-3 py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <span>Tap to Pay {formatCurrency(grandTotal)} via UPI App</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
 
                 {/* Amount to Pay */}
                 <div className="mb-3">
