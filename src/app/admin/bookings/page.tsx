@@ -49,6 +49,12 @@ export default function AdminBookingsPage() {
     }
     if (session) {
       loadBookings();
+
+      // Auto-refresh every 10 seconds so new bookings appear live without page reload
+      const interval = setInterval(() => {
+        loadBookings(false);
+      }, 10000);
+      return () => clearInterval(interval);
     }
   }, [session, status, router]);
 

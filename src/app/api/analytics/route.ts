@@ -47,6 +47,11 @@ export async function GET() {
       categoryStats[c.category] = (categoryStats[c.category] || 0) + 1;
     });
 
+    // Prioritize all PENDING bookings at the top of the verification queue so admin never misses them
+    const pendingList = bookings.filter(b => b.status === 'PENDING');
+    const otherList = bookings.filter(b => b.status !== 'PENDING');
+    const queuedBookings = [...pendingList, ...otherList].slice(0, 8);
+
     return NextResponse.json(
       {
         totalRevenue,
@@ -58,7 +63,7 @@ export async function GET() {
         pendingBookings,
         completedBookings,
         categoryStats,
-        recentBookings: bookings.slice(0, 5),
+        recentBookings: queuedBookings,
       },
       {
         headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },

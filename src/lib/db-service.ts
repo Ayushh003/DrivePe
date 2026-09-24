@@ -316,6 +316,33 @@ export const dbService = {
     return newBooking;
   },
 
+  async syncBooking(booking: Booking): Promise<boolean> {
+    const store = getStore();
+    const exists = store.bookings.some(b => b.id === booking.id || (b.utrNumber && b.utrNumber === booking.utrNumber));
+    if (!exists) {
+      if (!booking.car) {
+        booking.car = store.cars.find(c => c.id === booking.carId);
+      }
+      store.bookings.unshift(booking);
+      saveStore(store);
+    }
+
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection('Booking').updateOne(
+          { id: booking.id },
+          { $set: booking },
+          { upsert: true }
+        );
+        return true;
+      }
+    } catch (err) {
+      console.warn('[db-service] MongoDB Atlas syncBooking warning:', err);
+    }
+    return !exists;
+  },
+
   async updateBookingStatus(id: string, status: BookingStatus): Promise<Booking | null> {
     const store = getStore();
     const idx = store.bookings.findIndex(b => b.id === id);

@@ -49,6 +49,7 @@ export default function MyBookingsPage() {
         if (Array.isArray(localSaved) && localSaved.length > 0) {
           const userEmail = session?.user?.email?.toLowerCase().trim();
           const userId = (session?.user as any)?.id;
+          const unsynced: Booking[] = [];
           localSaved.forEach((lb: Booking) => {
             const matchesUser =
               (!userEmail && !userId) ||
@@ -57,8 +58,18 @@ export default function MyBookingsPage() {
 
             if (matchesUser && !list.some(b => b.id === lb.id || (b.utrNumber && b.utrNumber === lb.utrNumber))) {
               list.push(lb);
+              unsynced.push(lb);
             }
           });
+
+          // Automatically sync local bookings to MongoDB Atlas / server so Admin Dashboard sees them
+          if (unsynced.length > 0) {
+            fetch('/api/bookings/sync', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ bookings: unsynced }),
+            }).catch(err => console.warn('Background sync warning:', err));
+          }
         }
       } catch {}
 

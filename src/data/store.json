@@ -905,6 +905,191 @@
   ],
   "bookings": [
     {
+      "id": "bk-955960",
+      "userId": "customer-1",
+      "carId": "car-hatch-1",
+      "startDate": "2026-09-25T00:00:00.000Z",
+      "endDate": "2026-09-27T00:00:00.000Z",
+      "totalDays": 2,
+      "totalPrice": 2400,
+      "customerName": "Arjun Kapoor",
+      "customerEmail": "customer@carrental.com",
+      "customerPhone": "9876543210",
+      "utrNumber": "998877665544",
+      "notes": "Testing booking submission",
+      "status": "PENDING",
+      "paymentMethod": "UPI_QR",
+      "car": {
+        "id": "car-hatch-1",
+        "brand": "Maruti Suzuki",
+        "model": "Swift ZXi+",
+        "year": 2024,
+        "category": "Hatchback",
+        "pricePerDay": 1200,
+        "images": [
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ31LGFOPMlXZDb2wnZsWo8AaUMnpTnXDbaYmIgGUHOPg&s=10",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV84e259aXvHOOf7OEaXs-r12ArG-i9aEZjIlnVBzMtg&s=10"
+        ],
+        "description": "India’s favorite sporty hatchback offering peppy performance, exceptional fuel economy, and effortless city maneuverability. Equipped with modern SmartPlay touchscreen and auto climate control.",
+        "fuelType": "Petrol",
+        "transmission": "5-Speed Manual",
+        "seats": 5,
+        "mileage": "24.8 km/l",
+        "horsepower": 82,
+        "acceleration": "11.2s (0-100 km/h)",
+        "location": "Mumbai, Delhi NCR & Bengaluru",
+        "features": [
+          "SmartPlay Pro+ 9-inch Touchscreen",
+          "Cruise Control",
+          "LED Projector Headlamps with DRLs",
+          "Rear Parking Camera with Sensors",
+          "Dual Front Airbags & ABS with EBD",
+          "Push Button Engine Start/Stop"
+        ],
+        "isAvailable": true,
+        "rating": 4.8,
+        "reviewsCount": 34,
+        "reviews": [
+          {
+            "id": "rev-swift-1",
+            "userId": "user-demo-1",
+            "carId": "car-hatch-1",
+            "rating": 5,
+            "comment": "Super easy to drive in heavy city traffic. Mileage was outstanding and pick-up was super smooth.",
+            "userName": "Aarav Sharma",
+            "createdAt": "2026-02-14T10:30:00Z"
+          }
+        ],
+        "createdAt": "2026-01-10T00:00:00.000Z"
+      },
+      "createdAt": "2026-09-24T10:15:55.960Z",
+      "updatedAt": "2026-09-24T10:15:55.960Z"
+    },
+    {
+      "id": "bk-705338",
+      "userId": "customer-1",
+      "carId": "car-hatch-1",
+      "startDate": "2026-09-25T00:00:00.000Z",
+      "endDate": "2026-09-27T00:00:00.000Z",
+      "totalDays": 2,
+      "totalPrice": 2400,
+      "customerName": "Arjun Kapoor",
+      "customerEmail": "customer@carrental.com",
+      "customerPhone": "9876543210",
+      "utrNumber": "998877665544",
+      "notes": "Testing booking submission",
+      "status": "PENDING",
+      "paymentMethod": "UPI_QR",
+      "car": {
+        "id": "car-hatch-1",
+        "brand": "Maruti Suzuki",
+        "model": "Swift ZXi+",
+        "year": 2024,
+        "category": "Hatchback",
+        "pricePerDay": 1200,
+        "images": [
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ31LGFOPMlXZDb2wnZsWo8AaUMnpTnXDbaYmIgGUHOPg&s=10",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV84e259aXvHOOf7OEaXs-r12ArG-i9aEZjIlnVBzMtg&s=10"
+        ],
+        "description": "India’s favorite sporty hatchback offering peppy performance, exceptional fuel economy, and effortless city maneuverability. Equipped with modern SmartPlay touchscreen and auto climate control.",
+        "fuelType": "Petrol",
+        "transmission": "5-Speed Manual",
+        "seats": 5,
+        "mileage": "24.8 km/l",
+        "horsepower": 82,
+        "acceleration": "11.2s (0-100 km/h)",
+        "location": "Mumbai, Delhi NCR & Bengaluru",
+        "features": [
+          "SmartPlay Pro+ 9-inch Touchscreen",
+          "Cruise Control",
+          "LED Projector Headlamps with DRLs",
+          "Rear Parking Camera with Sensors",
+          "Dual Front Airbags & ABS with EBD",
+          "Push Button Engine Start/Stop"
+        ],
+        "isAvailable": true,
+        "rating": 4.8,
+        "reviewsCount": 34,
+        "reviews": [
+          {
+            "id": "rev-swift-1",
+            "userId": "user-demo-1",
+            "carId": "car-hatch-1",
+            "rating": 5,
+            "comment": "Super easy to drive in heavy city traffic. Mileage was outstanding and pick-up was super smooth.",
+            "userName": "Aarav Sharma",
+            "createdAt": "2026-02-14T10:30:00Z"
+          }
+        ],
+        "createdAt": "2026-01-10T00:00:00.000Z"
+      },
+      "createdAt": "2026-09-24T10:11:45.338Z",
+      "updatedAt": "2026-09-24T10:11:45.338Z"
+    },
+    {
+      "id": "bk-626268",
+      "userId": "customer-1",
+      "carId": "car-suv-m2",
+      "startDate": "2026-09-19T00:00:00.000Z",
+      "endDate": "2026-09-21T00:00:00.000Z",
+      "totalDays": 2,
+      "totalPrice": 9000,
+      "customerName": "Arjun Kapoor",
+      "customerEmail": "customer@carrental.com",
+      "customerPhone": "4563786345",
+      "utrNumber": "123456789012",
+      "notes": null,
+      "status": "APPROVED",
+      "paymentMethod": "UPI_QR",
+      "car": {
+        "id": "car-suv-m2",
+        "brand": "Toyota",
+        "model": "Fortuner 4x4 Legender",
+        "year": 2024,
+        "category": "SUV",
+        "pricePerDay": 4500,
+        "images": [
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCnchWri0HfjFQnwo6cGs7BZcipasDj6-6FB5gvqwVmw&s",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPI_A0lJmrQu_Xx8HnBtUwsQwSC6AQqcq_xCm2iw_YkQ&s=10",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJwu9SeenurX96iR5UG0X_vilL_jBN-Qu5P57v6MOIpQ&s=10",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVWSIdjwmFgsaXxzpqHEI53da7GJeBMOrSb7_KRh7cCg&s=10"
+        ],
+        "description": "India’s ultimate VIP SUV known for indestructible build quality, legendary 4x4 off-road capabilities, 204 HP diesel powertrain producing 500 Nm torque, and unmatched road dominance.",
+        "fuelType": "Diesel",
+        "transmission": "6-Speed AT with 4x4 High/Low",
+        "seats": 7,
+        "mileage": "14.2 km/l",
+        "horsepower": 204,
+        "acceleration": "9.6s (0-100 km/h)",
+        "location": "Mumbai, Delhi NCR & Bengaluru",
+        "features": [
+          "Unmatched 4x4 Off-Road Dominance with Low Range",
+          "JBL 11-Speaker Audio with Subwoofer",
+          "Front Ventilated Leather Seats",
+          "Electronic Differential Lock & Auto Limited Slip",
+          "Hands-Free Kick Sensor Powered Tailgate",
+          "Quad-LED Cat-Eye Headlamps with Waterfalls DRLs"
+        ],
+        "isAvailable": true,
+        "rating": 5,
+        "reviewsCount": 64,
+        "reviews": [
+          {
+            "id": "rev-fortuner-1",
+            "userId": "user-demo-2",
+            "carId": "car-suv-m2",
+            "rating": 5,
+            "comment": "Booked for a family wedding and road trip. Pure authority on roads and bulletproof reliability.",
+            "userName": "Harshwardhan Rathore",
+            "createdAt": "2026-02-28T19:30:00Z"
+          }
+        ],
+        "createdAt": "2026-02-07T00:00:00.000Z"
+      },
+      "createdAt": "2026-09-19T11:33:46.268Z",
+      "updatedAt": "2026-09-19T11:34:17.697Z"
+    },
+    {
       "id": "bk-930238",
       "userId": "customer-1",
       "carId": "car-hatch-2",
@@ -917,7 +1102,7 @@
       "customerPhone": "9876543210",
       "utrNumber": "UTR1789815926117",
       "notes": null,
-      "status": "PENDING",
+      "status": "APPROVED",
       "paymentMethod": "UPI_QR",
       "car": {
         "id": "car-hatch-2",
@@ -962,7 +1147,7 @@
         "createdAt": "2026-01-12T00:00:00.000Z"
       },
       "createdAt": "2026-09-19T11:05:30.238Z",
-      "updatedAt": "2026-09-19T11:05:30.238Z"
+      "updatedAt": "2026-09-19T11:34:17.661Z"
     },
     {
       "id": "bk-784622",
